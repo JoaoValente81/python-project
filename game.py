@@ -157,7 +157,7 @@ def linebreak():
     """
     print("\n\n")
 
-def start_game():
+def start_game(): ## CHANGE THE TEXT TO FIT THE IRONHACK GAME"
     """
     Start the game
     """
