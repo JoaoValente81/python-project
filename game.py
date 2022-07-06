@@ -174,7 +174,7 @@ def play_room(room):
     If it is, the game will end with success. Otherwise, let player either 
     explore (list all items in this room) or examine an item found here.
     """
-    counter = 3 ## find out where we can put the counter
+    
 
     game_state["current_room"] = room
     if(game_state["current_room"] == game_state["target_room"]):
