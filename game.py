@@ -1,12 +1,13 @@
 # define rooms and items
 
-couch = {
-    "name": "couch",
-    "type": "furniture",
+
+diogo = {
+    "name": "diogo",
+    "type": "person",
 }
 
 door_a = {
-    "name": "door a",
+    "name": "ux",
     "type": "door",
 }
 
@@ -16,13 +17,13 @@ key_a = {
     "target": door_a,
 }
 
-piano = {
-    "name": "piano",
+dish_washer = {
+    "name": "dish washer",
     "type": "furniture",
 }
 
-game_room = {
-    "name": "game room",
+common_room = {
+    "name": "common room",
     "type": "room",
 }
 
@@ -33,13 +34,13 @@ outside = {
 
 ## Bedroom 1
 
-bedroom_1 = {
-    "name": "bedroom 1",
+ux_room = {
+    "name": "ux room",
     "type": "room",
 }
 
-queen_bed = {
-    "name": "queen bed",
+interview = {
+    "name": "interview",
     "type": "furniture",
 }
 
@@ -63,19 +64,19 @@ key_b = {
 
 ## Bedroom 2
 
-bedroom_2 = {
-    "name": "bedroom 2",
+data_room = {
+    "name": "data room",
     "type": "room",
 }
 
 
-double_bed = {
-    "name": "double bed",
+lab = {
+    "name": "lab",
     "type": "furniture",
 }
 
-dresser = {
-    "name": "dresser",
+project = {
+    "name": "project",
     "type": "furniture",
 }
 
@@ -89,8 +90,8 @@ key_c = {
 
 # Living Room
 
-living_room = {
-    "name": "living room",
+balcony = {
+    "name": "balcony",
     "type": "room",
 }
 
@@ -108,38 +109,37 @@ key_d = {
 }
 
 
-dining_table = {
-    "name": "dining table",
+chairs = {
+    "name": "chairs",
     "type": "furniture",
 }
 
 
-all_rooms = [game_room, bedroom_1, bedroom_2, living_room]
+all_rooms = [common_room, ux_room, data_room, balcony]
 
 all_doors = [door_a, door_b, door_c, door_d]
 
 # define which items/rooms are related
 
 object_relations = {
-    "game room": [couch, piano, door_a],
-    "piano": [key_a],
+    "common room": [diogo, dish_washer, door_a],
+    "dish washer": [key_a],
     "outside": [door_d], 
-    "door a": [game_room, bedroom_1],
-    "bedroom 1": [queen_bed, door_b, door_c],
-    "queen bed": [key_b],
-    "door b": [bedroom_1, bedroom_2],
-    "bedroom 2":[dresser, double_bed, door_b],
-    "dresser":[key_d],
-    "double bed":[key_c],
-    "living room":[dining_table, door_c, door_d],
-    "door c": [bedroom_1, living_room],
-    "door d": [living_room, outside]
+    "door a": [common_room, ux_room],
+    "ux room": [interview, door_b, door_c],
+    "interview": [key_b],
+    "door b": [ux_room, data_room],
+    "data room":[lab, project, door_b],
+    "project":[key_d],
+    "lab":[key_c],
+    "balcony":[chairs, door_c, door_d],
+    "door c": [ux_room, balcony],
+    "door d": [balcony, outside]
     
     
    
 }
 
-    
 
 # define game state. Do not directly change this dict. 
 # Instead, when a new game starts, make a copy of this
@@ -147,7 +147,7 @@ object_relations = {
 # way you can replay the game multiple times.
 
 INIT_GAME_STATE = {
-    "current_room": game_room,
+    "current_room": common_room,
     "keys_collected": [],
     "target_room": outside
 }
@@ -165,16 +165,22 @@ def start_game():
     print("You wake up on a couch and find yourself in a strange house with no windows which you have never been to before. You don't remember why you are here and what had happened before. You feel some unknown danger is approaching and you must get out of the house, NOW!")
     play_room(game_state["current_room"])
 
+
+
+
 def play_room(room):
     """
     Play a room. First check if the room being played is the target room.
     If it is, the game will end with success. Otherwise, let player either 
     explore (list all items in this room) or examine an item found here.
     """
+    counter = 3 ## find out where we can put the counter
+
     game_state["current_room"] = room
     if(game_state["current_room"] == game_state["target_room"]):
         print("Congrats! You escaped the room!")
     else:
+
         print("You are now in " + room["name"])
         intended_action = input("What would you like to do? Type 'explore' or 'examine'?").strip()
         if intended_action == "explore":
@@ -183,7 +189,7 @@ def play_room(room):
         elif intended_action == "examine":
             examine_item(input("What would you like to examine?").strip())
         else:
-            print("Not sure what you mean. Type 'explore' or 'examine'.")
+            print("Not sure what you mean. Type 'explore' or 'examine'")
             play_room(room)
         linebreak()
 
@@ -228,7 +234,7 @@ def examine_item(item_name):
                     if(key["target"] == item):
                         have_key = True
                 if(have_key):
-                    output += "You unlock it with a key you have."
+                    output += "You unlock it with the key you have"   
                     next_room = get_next_room_of_door(item, current_room)
                 else:
                     output += "It is locked but you don't have the key."
@@ -236,7 +242,15 @@ def examine_item(item_name):
                 if(item["name"] in object_relations and len(object_relations[item["name"]])>0):
                     item_found = object_relations[item["name"]].pop()
                     game_state["keys_collected"].append(item_found)
-                    output += "You find " + item_found["name"] + "."
+                    if (item["name"] == 'dish washer'):
+                        output += "You wash the dishes and run away."
+                    if (item["name"] == 'interview'):
+                        output += "You have completed the interview"
+                    if (item["name"] == 'lab'):
+                        output += "You have completed lab."
+                    if (item["name"] == 'project'):
+                        output += "You have completed the project"
+                        
                 else:
                     output += "There isn't anything interesting about it."
             print(output)
