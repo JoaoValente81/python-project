@@ -167,7 +167,7 @@ def start_game(): ## CHANGE THE TEXT TO FIT THE IRONHACK GAME"
     Start the game
     """
     linebreak()
-    print("You wake up on a couch and find yourself in a strange house with no windows which you have never been to before. You don't remember why you are here and what had happened before. You feel some unknown danger is approaching and you must get out of the house, NOW!")
+    print("You wake up at Ironhack common room in the morning and are already late for your classes. You must get to the class before you get at full day absence, but see the Program Manager looking at you with angry face. How will you escape?")
     linebreak()
     play_room(game_state["current_room"])
 
