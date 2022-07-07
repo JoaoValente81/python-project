@@ -1,5 +1,9 @@
-# define rooms and items
 
+## stuff to add 
+
+    # print a line of space between the lines of the output
+    # add image to the finale (or add one in each step)
+    # add the counter
 
 
 
@@ -156,12 +160,15 @@ def linebreak():
     Print a line break
     """
     print("\n\n")
+    
 
 def start_game(): ## CHANGE THE TEXT TO FIT THE IRONHACK GAME"
     """
     Start the game
     """
+    linebreak()
     print("You wake up on a couch and find yourself in a strange house with no windows which you have never been to before. You don't remember why you are here and what had happened before. You feel some unknown danger is approaching and you must get out of the house, NOW!")
+    linebreak()
     play_room(game_state["current_room"])
 
 
@@ -181,12 +188,13 @@ def play_room(room):
     else:
 
         print("You are now in " + room["name"])
-        intended_action = input("What would you like to do? Type 'look around' or 'interact'?").strip()
+        intended_action = input("""    What would you like to do? Type 'look around' or 'interact'?    """).strip()
         if intended_action == "look around":
             explore_room(room)
             play_room(room)
         elif intended_action == "interact":
             examine_item(input("Who or what would you like to interact with?").strip())
+    
         else:
             print("Not sure what you mean. Type 'look around' or 'interact'")
             play_room(room)
