@@ -1,13 +1,11 @@
 
-## stuff to add 
-
-    # print a line of space between the lines of the output
-    # add image to the finale (or add one in each step)
-    # add the counter
+from PIL import Image
 
 
 
-diogo = {                   # changed the dictionaries to suit the new game
+
+
+diogo = {                   
     "name": "diogo",
     "type": "person",
 }
@@ -38,7 +36,6 @@ outside = {
 }
 
 
-## Bedroom 1
 
 ux_room = {
     "name": "ux room",
@@ -67,8 +64,6 @@ key_data = {
 }
 
 
-
-## Bedroom 2
 
 data_room = {
     "name": "data room",
@@ -133,7 +128,7 @@ object_relations = {                                    ## changed the object re
     "students": [key_data],
     "data door": [ux_room, data_room],
     "data room":[gladys, jose,  go_to_balcony],
-    "jose":[key_chair],  ## check for situation where you don't complete the project and try to go to the balcony
+    "jose":[key_chair],  
     "gladys":[key_balcony],
     "balcony":[chairs],
     "go to balcony": [data_room, balcony],
@@ -161,15 +156,22 @@ def linebreak():
     """
     print("\n\n")
     
+def show_picture(room):
+    myImage = Image.open("pictures/"+room+".jpg")
+    myImage.show()
 
-def start_game(): ## CHANGE THE TEXT TO FIT THE IRONHACK GAME"
+def start_game(): 
     """
     Start the game
     """
     linebreak()
     print("You wake up at Ironhack common room in the morning and are already late for your classes. You must get to the class before you get at full day absence, but see the Program Manager looking at you with angry face. How will you escape?")
     linebreak()
+    show_picture(game_state["current_room"]['name'])
+
     play_room(game_state["current_room"])
+
+
 
 
 counter=3
@@ -186,6 +188,7 @@ def play_room(room):
     game_state["current_room"] = room
     if(game_state["current_room"] == game_state["target_room"]):
         print("Congrats! You've made it through another day at Ironhack! Enjoy the view :)")
+        
     else:
 
         print("You are now in " + room["name"])
@@ -208,7 +211,7 @@ def play_room(room):
 
                 start_game()
             else:
-                print('you have ' + str(counter) + 'tries')
+                print("You're at Ironhack, you need to learn how to type. You have "  + str(counter) + " tries")
                 play_room(room)
 
             print("Not sure what you mean. Type 'look around' or 'interact'")
@@ -231,6 +234,7 @@ def get_next_room_of_door(door, current_room):
     connected_rooms = object_relations[door["name"]]
     for room in connected_rooms:
         if(not current_room == room):
+            show_picture(room['name'])
             return room
 
 def examine_item(item_name):
@@ -260,7 +264,7 @@ def examine_item(item_name):
                     if (item["name"] == 'hallway'): 
                         output += "You go into the hallway and move towards the UX/UI classroom"
                     elif (item["name"] == 'data door'): 
-                        output += "You exit the room towards the Data Analytics classrom" ## not appearing in the code
+                        output += "You exit the room towards the Data Analytics classrom" 
 
                     next_room = get_next_room_of_door(item, current_room)
                 else:
@@ -293,7 +297,7 @@ def examine_item(item_name):
     if(output is None):
         print("The item you requested is not found in the current room.")
     
-    if(next_room and input("Do you want to go to the next room? Enter 'yes' or 'no'").strip() == 'yes'):
+    if(next_room  and input("Do you want to move on? Enter 'yes' or 'no'").strip() == 'yes'):
         play_room(next_room)
     else:
         play_room(current_room)
@@ -301,3 +305,5 @@ def examine_item(item_name):
 game_state = INIT_GAME_STATE.copy()
 
 start_game()
+
+
