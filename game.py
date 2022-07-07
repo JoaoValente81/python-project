@@ -1,28 +1,35 @@
-# define rooms and items
 
-couch = {
-    "name": "couch",
-    "type": "furniture",
+## stuff to add 
+
+    # print a line of space between the lines of the output
+    # add image to the finale (or add one in each step)
+    # add the counter
+
+
+
+diogo = {                   # changed the dictionaries to suit the new game
+    "name": "diogo",
+    "type": "person",
 }
 
-door_a = {
-    "name": "door a",
+hallway = {
+    "name": "hallway",
     "type": "door",
 }
 
-key_a = {
-    "name": "key for door a",
+key_hallway = {
+    "name": "key for hallway",
     "type": "key",
-    "target": door_a,
+    "target": hallway,
 }
 
-piano = {
-    "name": "piano",
+dish_washer = {
+    "name": "dish washer",
     "type": "furniture",
 }
 
-game_room = {
-    "name": "game room",
+common_room = {
+    "name": "common room",
     "type": "room",
 }
 
@@ -33,113 +40,109 @@ outside = {
 
 ## Bedroom 1
 
-bedroom_1 = {
-    "name": "bedroom 1",
+ux_room = {
+    "name": "ux room",
     "type": "room",
 }
 
-queen_bed = {
-    "name": "queen bed",
-    "type": "furniture",
+students = {
+    "name": "students",
+    "type": "person",
 }
 
-door_b = {
-    "name": "door b",
+data_door = {
+    "name": "data door",
     "type": "door",
 }
 
-door_c = {
-    "name": "door c",
+go_to_balcony = {
+    "name": "go to balcony",
     "type": "door",
 }
 
-key_b = {
-    "name": "key for door b",
+key_data = {
+    "name": "key for data door",
     "type": "key",
-    "target": door_b,
+    "target": data_door,
 }
 
 
 
 ## Bedroom 2
 
-bedroom_2 = {
-    "name": "bedroom 2",
+data_room = {
+    "name": "data room",
     "type": "room",
 }
 
 
-double_bed = {
-    "name": "double bed",
-    "type": "furniture",
+gladys = {
+    "name": "gladys",
+    "type": "person",
 }
 
-dresser = {
-    "name": "dresser",
-    "type": "furniture",
+jose = {
+    "name": "jose",
+    "type": "person",
 }
 
 
-key_c = {
-    "name": "key for door c",
+key_balcony = {
+    "name": "key for balcony",
     "type": "key",
-    "target": door_c,
+    "target": go_to_balcony,
 }
 
 
 # Living Room
 
-living_room = {
-    "name": "living room",
+balcony = {
+    "name": "balcony",
     "type": "room",
 }
 
 
-door_d = {
-    "name": "door d",
+chairs = {
+    "name": "chairs",
     "type": "door",
 }  
 
 
-key_d = {
-    "name": "key for door d",
+key_chair = {
+    "name": "key for chairs",
     "type": "key",
-    "target": door_d,
+    "target": chairs,
 }
 
 
-dining_table = {
-    "name": "dining table",
-    "type": "furniture",
-}
 
 
-all_rooms = [game_room, bedroom_1, bedroom_2, living_room]
 
-all_doors = [door_a, door_b, door_c, door_d]
+all_rooms = [common_room, ux_room, data_room, balcony] ## changed the lists
+
+all_doors = [hallway, data_door, go_to_balcony, chairs]
 
 # define which items/rooms are related
 
-object_relations = {
-    "game room": [couch, piano, door_a],
-    "piano": [key_a],
-    "outside": [door_d], 
-    "door a": [game_room, bedroom_1],
-    "bedroom 1": [queen_bed, door_b, door_c],
-    "queen bed": [key_b],
-    "door b": [bedroom_1, bedroom_2],
-    "bedroom 2":[dresser, double_bed, door_b],
-    "dresser":[key_d],
-    "double bed":[key_c],
-    "living room":[dining_table, door_c, door_d],
-    "door c": [bedroom_1, living_room],
-    "door d": [living_room, outside]
+object_relations = {                                    ## changed the object relations
+    "common room": [diogo, dish_washer, hallway],
+    "dish washer": [key_hallway],
+    "outside": [chairs], 
+    "hallway": [common_room, ux_room],
+    "ux room": [students, data_door],
+    "students": [key_data],
+    "data door": [ux_room, data_room],
+    "data room":[gladys, jose,  go_to_balcony],
+    "jose":[key_chair],  ## check for situation where you don't complete the project and try to go to the balcony
+    "gladys":[key_balcony],
+    "balcony":[chairs],
+    "go to balcony": [data_room, balcony],
+    "chairs": [balcony, outside]
     
     
    
 }
 
-    
 
 # define game state. Do not directly change this dict. 
 # Instead, when a new game starts, make a copy of this
@@ -147,7 +150,7 @@ object_relations = {
 # way you can replay the game multiple times.
 
 INIT_GAME_STATE = {
-    "current_room": game_room,
+    "current_room": common_room,
     "keys_collected": [],
     "target_room": outside
 }
@@ -157,15 +160,20 @@ def linebreak():
     Print a line break
     """
     print("\n\n")
+    
 
-def start_game():
+def start_game(): ## CHANGE THE TEXT TO FIT THE IRONHACK GAME"
     """
     Start the game
     """
-    print("You wake up on a couch and find yourself in a strange house with no windows which you have never been to before. You don't remember why you are here and what had happened before. You feel some unknown danger is approaching and you must get out of the house, NOW!")
+    linebreak()
+    print("You wake up at Ironhack common room in the morning and are already late for your classes. You must get to the class before you get at full day absence, but see the Program Manager looking at you with angry face. How will you escape?")
+    linebreak()
     play_room(game_state["current_room"])
 
+
 counter=3
+
 
 def play_room(room):
     """
@@ -173,23 +181,28 @@ def play_room(room):
     If it is, the game will end with success. Otherwise, let player either 
     explore (list all items in this room) or examine an item found here.
     """
+    
+
     game_state["current_room"] = room
     if(game_state["current_room"] == game_state["target_room"]):
-        print("Congrats! You escaped the room!")
+        print("Congrats! You've made it through another day at Ironhack! Enjoy the view :)")
     else:
+
         print("You are now in " + room["name"])
-        intended_action = input("What would you like to do? Type 'explore' or 'examine'?").strip()
-        if intended_action == "explore":
+        intended_action = input("""    What would you like to do? Type 'look around' or 'interact'?    """).strip()
+        if intended_action == "look around":
             explore_room(room)
             play_room(room)
-        elif intended_action == "examine":
-            examine_item(input("What would you like to examine?").strip())
+        elif intended_action == "interact":
+            examine_item(input("Who or what would you like to interact with?").strip())
+    
         else:
+
             global counter
             counter=counter-1
             if counter==0:
                 print("GAME OVER, START AGAIN")
-                game_state["current_room"] = game_room
+                game_state["current_room"] = common_room
                 game_state["keys_collected"]=[]
                 counter = 3
 
@@ -197,6 +210,10 @@ def play_room(room):
             else:
                 print('you have ' + str(counter) + 'tries')
                 play_room(room)
+
+            print("Not sure what you mean. Type 'look around' or 'interact'")
+            play_room(room)
+
         linebreak()
 
 def explore_room(room):
@@ -204,7 +221,7 @@ def explore_room(room):
     Explore a room. List all items belonging to this room.
     """
     items = [i["name"] for i in object_relations[room["name"]]]
-    print("You explore the room. This is " + room["name"] + ". You find " + ", ".join(items))
+    print("You look around. This is " + room["name"] + ". You find " + ", ".join(items))
 
 def get_next_room_of_door(door, current_room):
     """
@@ -233,31 +250,50 @@ def examine_item(item_name):
     
     for item in object_relations[current_room["name"]]:
         if(item["name"] == item_name):
-            output = "You examine " + item_name + ". "
+            output = "You interact with " + item_name + ". "
             if(item["type"] == "door"):
                 have_key = False
                 for key in game_state["keys_collected"]:
                     if(key["target"] == item):
                         have_key = True
                 if(have_key):
-                    output += "You unlock it with a key you have."
+                    if (item["name"] == 'hallway'): 
+                        output += "You go into the hallway and move towards the UX/UI classroom"
+                    elif (item["name"] == 'data door'): 
+                        output += "You exit the room towards the Data Analytics classrom" ## not appearing in the code
+
                     next_room = get_next_room_of_door(item, current_room)
                 else:
-                    output += "It is locked but you don't have the key."
+                    if(item["name"] == 'go to balcony'):
+                        output += "You haven't completed all the assignments. Get back to work!"
+                    else:
+                        output += "It is locked but you don't have the key." ## do
             else:
                 if(item["name"] in object_relations and len(object_relations[item["name"]])>0):
                     item_found = object_relations[item["name"]].pop()
-                    game_state["keys_collected"].append(item_found)
-                    output += "You find " + item_found["name"] + "."
+                    game_state["keys_collected"].append(item_found) ## here we coded the keys into tasks
+                    if (item["name"] == 'dish washer'):
+                        output += "You wash the dishes and are allowed to leave." 
+                    elif (item["name"] == 'students'):
+                        output += "The students interview you and let you go."
+                    elif (item["name"] == 'gladys'):
+                        output += "Gladys debugs your labs."
+                    elif (item["name"] == 'jose'):
+                        output += "Jose tells you to work harder. You finish your project"
+                    
+                        
                 else:
-                    output += "There isn't anything interesting about it."
+                    if (item["name"] == 'diogo'):
+                        output += "Diogo says you must wash the dishes!"    
+                    else:
+                        output += "There isn't anything interesting about it."
             print(output)
             break
 
     if(output is None):
         print("The item you requested is not found in the current room.")
     
-    if(next_room and input("Do you want to go to the next room? Ener 'yes' or 'no'").strip() == 'yes'):
+    if(next_room and input("Do you want to go to the next room? Enter 'yes' or 'no'").strip() == 'yes'):
         play_room(next_room)
     else:
         play_room(current_room)
