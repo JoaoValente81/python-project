@@ -165,6 +165,8 @@ def start_game():
     print("You wake up on a couch and find yourself in a strange house with no windows which you have never been to before. You don't remember why you are here and what had happened before. You feel some unknown danger is approaching and you must get out of the house, NOW!")
     play_room(game_state["current_room"])
 
+counter=3
+
 def play_room(room):
     """
     Play a room. First check if the room being played is the target room.
@@ -183,8 +185,18 @@ def play_room(room):
         elif intended_action == "examine":
             examine_item(input("What would you like to examine?").strip())
         else:
-            print("Not sure what you mean. Type 'explore' or 'examine'.")
-            play_room(room)
+            global counter
+            counter=counter-1
+            if counter==0:
+                print("GAME OVER, START AGAIN")
+                game_state["current_room"] = game_room
+                game_state["keys_collected"]=[]
+                counter = 3
+
+                start_game()
+            else:
+                print('you have ' + str(counter) + 'tries')
+                play_room(room)
         linebreak()
 
 def explore_room(room):
