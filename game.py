@@ -187,16 +187,18 @@ def play_room(room):
 
     game_state["current_room"] = room
     if(game_state["current_room"] == game_state["target_room"]):
-        print("Congrats! You've made it through another day at Ironhack! Enjoy the view :)")
+        print("Congrats! You've made it through another day at Ironhack! See you tomorrow (:")
         
     else:
 
         print("You are now in " + room["name"])
         intended_action = input("""    What would you like to do? Type 'look around' or 'interact'?    """).strip()
+        print("")
         if intended_action == "look around":
             explore_room(room)
             play_room(room)
         elif intended_action == "interact":
+            print("")
             examine_item(input("Who or what would you like to interact with?").strip())
     
         else:
@@ -211,7 +213,7 @@ def play_room(room):
 
                 start_game()
             else:
-                print("You're at Ironhack, you need to learn how to type. You have "  + str(counter) + " tries")
+                print("You're at Ironhack, you need to learn how to type. You have "  + str(counter) + " tries left\n")
                 play_room(room)
 
             print("Not sure what you mean. Type 'look around' or 'interact'")
@@ -224,7 +226,9 @@ def explore_room(room):
     Explore a room. List all items belonging to this room.
     """
     items = [i["name"] for i in object_relations[room["name"]]]
+    
     print("You look around. This is " + room["name"] + ". You find " + ", ".join(items))
+    print("")
 
 def get_next_room_of_door(door, current_room):
     """
@@ -262,14 +266,18 @@ def examine_item(item_name):
                         have_key = True
                 if(have_key):
                     if (item["name"] == 'hallway'): 
-                        output += "You go into the hallway and move towards the UX/UI classroom"
+                        output += "You go into the hallway and move towards the UX/UI classroom\n"
                     elif (item["name"] == 'data door'): 
-                        output += "You exit the room towards the Data Analytics classrom" 
+                        output += "You exit the room towards the Data Analytics classrom\n" 
 
                     next_room = get_next_room_of_door(item, current_room)
                 else:
                     if(item["name"] == 'go to balcony'):
-                        output += "You haven't completed all the assignments. Get back to work!"
+                        output += "You haven't completed all the assignments. Get back to work!\n"
+                    elif(item["name"] == 'hallway'):
+                        output += "You aren't allowed to leave the room. diogo is in the way.\n"
+                    elif(item["name"] == 'data door'):
+                        output += "You haven't talked to the students yet, don't be rude!\n"
                     else:
                         output += "It is locked but you don't have the key." ## do
             else:
@@ -277,20 +285,20 @@ def examine_item(item_name):
                     item_found = object_relations[item["name"]].pop()
                     game_state["keys_collected"].append(item_found) ## here we coded the keys into tasks
                     if (item["name"] == 'dish washer'):
-                        output += "You wash the dishes and are allowed to leave." 
+                        output += "You wash the dishes and are allowed to leave.\n" 
                     elif (item["name"] == 'students'):
-                        output += "The students interview you and let you go."
+                        output += "The students interview you and let you go.\n"
                     elif (item["name"] == 'gladys'):
-                        output += "Gladys debugs your labs."
+                        output += "Gladys debugs your labs.\n"
                     elif (item["name"] == 'jose'):
-                        output += "Jose tells you to work harder. You finish your project"
+                        output += "Jose tells you to work harder. You finish your project.\n"
                     
                         
                 else:
                     if (item["name"] == 'diogo'):
-                        output += "Diogo says you must wash the dishes!"    
+                        output += "Diogo says you must wash the dishes!\n"    
                     else:
-                        output += "There isn't anything interesting about it."
+                        output += "There isn't anything interesting about it.\n"
             print(output)
             break
 
